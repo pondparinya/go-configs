@@ -2,6 +2,8 @@ package configs
 
 import (
 	"fmt"
+	"os"
+	"path"
 	"reflect"
 	"sort"
 	"strings"
@@ -31,10 +33,16 @@ func LoadConfigs(prefix, path, name string, cfg interface{}) error {
 	return entry.checkMissing()
 }
 
-func initiate(path, name string) (*confEntry, error) {
+func initiate(pathName, name string) (*confEntry, error) {
+	p := path.Join(pathName, name)
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open file : %+v", err)
+	}
 	v := viper.New()
 	v.SetConfigName(name)
-	v.AddConfigPath(path)
+	// v.AddConfigPath(path)
+	v.ReadConfig(f)
 	if err := v.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("failed to read configs : %+v", err)
 	}
