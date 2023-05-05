@@ -2,8 +2,6 @@ package configs
 
 import (
 	"fmt"
-	"os"
-	"path"
 	"reflect"
 	"sort"
 	"strings"
