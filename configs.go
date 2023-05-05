@@ -15,8 +15,8 @@ type confEntry struct {
 	v *viper.Viper
 }
 
-func LoadConfigs(prefix, path, name string, cfg interface{}) error {
-	entry, err := initiate(prefix, path)
+func LoadConfigs(path, name string, cfg interface{}) error {
+	entry, err := initiate(path, name)
 	if err != nil {
 		return err
 	}
