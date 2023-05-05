@@ -33,21 +33,13 @@ func LoadConfigs(path, name string, cfg interface{}) error {
 	return entry.checkMissing()
 }
 
-func initiate(pathName, name string) (*confEntry, error) {
-	p := path.Join(pathName, name)
-	f, err := os.Open(p)
-	if err != nil {
-		return nil, fmt.Errorf("failed to open file : %+v", err)
-	}
+func initiate(path, name string) (*confEntry, error) {
 	v := viper.New()
 	v.SetConfigName(name)
-	// v.AddConfigPath(path)
-	if err := v.ReadConfig(f); err != nil {
+	v.AddConfigPath(path)
+	if err := v.ReadInConfig(); err != nil {
 		return nil, fmt.Errorf("failed to read configs : %+v", err)
 	}
-	// if err := v.ReadInConfig(); err != nil {
-	// 	return nil, fmt.Errorf("failed to read configs : %+v", err)
-	// }
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	return &confEntry{v}, nil
